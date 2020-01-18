@@ -1,4 +1,7 @@
-package com.zhangbin.jackson.annotation;
+package com.zhangbin.jackson.core.annotation;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.zhangbin.jackson.core.MaskSerializer;
 
 import java.lang.annotation.*;
 
@@ -8,6 +11,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Inherited
+@JsonSerialize(using = MaskSerializer.class)
 public @interface Mask {
 
 

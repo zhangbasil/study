@@ -1,16 +1,12 @@
 package com.zhangbin.jackson.controller;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import com.zhangbin.jackson.annotation.Mask;
-import com.zhangbin.jackson.filter.DemoPropertyFilter;
-import com.zhangbin.jackson.filter.MaskPropertyFilter;
+import com.zhangbin.jackson.core.DefaultJacksonAnnotationIntrospector;
+import com.zhangbin.jackson.core.annotation.Mask;
+import com.zhangbin.jackson.core.annotation.Other;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +14,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author <a href="mailto:hbsy_zhb@163.com">zhangbin</a>
@@ -27,14 +24,18 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
+
+//    @JsonIgnore
     Long userId;
+    @Other
     String userName;
     @JsonIgnore
     String password;
-    @Mask(left = 3, right = 4)
+//    @Mask(left = 3, right = 4)
     String mobile;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime createTime;
+
+    Date date;
 
 
     public static void main(String[] args) throws JsonProcessingException {
@@ -46,15 +47,11 @@ public class User {
                 .createTime(LocalDateTime.now())
                 .build();
 
-
-        SimpleFilterProvider filterProvider = new SimpleFilterProvider();
-        filterProvider.addFilter("DemoPropertyFilter", new DemoPropertyFilter())
-                .addFilter("maskFilter", new MaskPropertyFilter());
-
         JsonMapper jsonMapper = JsonMapper.builder().build();
-        jsonMapper.addMixIn(User.class, DemoPropertyFilter.class)
-                .addMixIn(User.class, MaskPropertyFilter.class);
-        String userStr = jsonMapper.setFilterProvider(filterProvider).writer().withDefaultPrettyPrinter()
+
+        jsonMapper.setAnnotationIntrospector(new DefaultJacksonAnnotationIntrospector());
+
+        String userStr = jsonMapper.writer().withDefaultPrettyPrinter()
                 .writeValueAsString(user);
 
 
