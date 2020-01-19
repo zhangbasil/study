@@ -5,17 +5,25 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.3.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>2.2.3.RELEASE</version>
+        <relativePath/>
     </parent>
-    <groupId>com.zhangbin.simulator</groupId>
-    <artifactId>http-simulator</artifactId>
+
+    <groupId>com.zhangbin</groupId>
+    <artifactId>study</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>http-simulator</name>
-    <description>http 请求 模拟器</description>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>jackson-ext</module>
+        <module>java-concurrency</module>
+        <module>threadlocal-proxy</module>
+        <module>http-simulator</module>
+    </modules>
+
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
     </properties>
 
     <dependencies>
@@ -23,20 +31,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
-        <!-- The prometheus client -->
-        <!-- https://mvnrepository.com/artifact/io.prometheus/simpleclient_spring_boot -->
-        <dependency>
-            <groupId>io.prometheus</groupId>
-            <artifactId>simpleclient_spring_boot</artifactId>
-            <version>0.6.0</version>
-        </dependency>
-
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 

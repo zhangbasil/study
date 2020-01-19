@@ -19,8 +19,8 @@ public class ThreadPoolQuestion {
     public static void main(String[] args) {
 
 //        threadPoolExecutor();
-//        forkJoinPool();
-        parallelStream();
+        forkJoinPool();
+//        parallelStream();
 
 
 
@@ -32,7 +32,7 @@ public class ThreadPoolQuestion {
 
     private static void parallelStream() {
         List<String> strings = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 200000; i++) {
             strings.add("task" + i);
         }
 
@@ -43,7 +43,7 @@ public class ThreadPoolQuestion {
 
 
     private static void threadPoolExecutor() {
-        ThreadPoolExecutor executor = new ThreadPoolExecutor(20, 20, 0, TimeUnit.MILLISECONDS,
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(3, 5, 0, TimeUnit.MILLISECONDS,
                 new LinkedBlockingQueue<>());
         for (int i = 0; i < 100; i++) {
             executor.submit(ThreadPoolQuestion::action);
@@ -60,7 +60,7 @@ public class ThreadPoolQuestion {
 
     private static void keepAliveTime() {
         ThreadPoolExecutor executor = new ThreadPoolExecutor(2, 5, 60000, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<>(5));
+                new LinkedBlockingQueue<>(20));
 
         for (int i = 0; i < 10; i++) {
             if (i > 7) {
@@ -79,7 +79,7 @@ public class ThreadPoolQuestion {
     private static void forkJoinPool() {
 
         ForkJoinPool forkJoinPool = new ForkJoinPool();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 100000; i++) {
             forkJoinPool.submit(ThreadPoolQuestion::action);
         }
 
@@ -94,7 +94,15 @@ public class ThreadPoolQuestion {
     }
 
     private static void action() {
-        System.out.println("线程 [" + Thread.currentThread().getName() + "] 执行了这个任务.... ");
+        String name = Thread.currentThread().getName();
+        if (name.contains("-3")) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("线程 [" + name + "] 执行了这个任务.... ");
     }
 
 }

@@ -6,8 +6,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author zhangbin
@@ -21,17 +19,15 @@ public class ThreadLocalHandlerInterceptorAdapter extends HandlerInterceptorAdap
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
         ReqContext reqContext = ReqContext.get();
-
         String val = request.getParameter("val");
         reqContext.setVal(val);
 
 
 
-        Map<String, HttpServletRequest> requestMap = new HashMap<>();
-
-        reqContext.setContainer(requestMap);
+//        Map<String, HttpServletRequest> requestMap = new HashMap<>();
+//
+//        reqContext.setContainer(requestMap);
 
         return super.preHandle(request, response, handler);
     }
@@ -39,7 +35,6 @@ public class ThreadLocalHandlerInterceptorAdapter extends HandlerInterceptorAdap
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
                                 Object handler, Exception ex) throws Exception {
-        super.afterCompletion(request, response, handler, ex);
 
         ReqContext.clean();
     }

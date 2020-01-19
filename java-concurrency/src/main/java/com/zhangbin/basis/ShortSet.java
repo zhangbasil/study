@@ -1,7 +1,7 @@
 package com.zhangbin.basis;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.File;
+import java.util.*;
 
 /**
  * @author zhangbin
@@ -11,6 +11,13 @@ import java.util.Set;
  * @Version V1.0
  */
 public class ShortSet {
+
+
+    private String abc;
+    private static final String str = "sd";
+    public ShortSet() {
+
+    }
 
     /***
      *
@@ -29,13 +36,50 @@ public class ShortSet {
      */
 
     public static void main(String[] args) {
-        Set<Short> s = new HashSet<>();
-        for (short i = 0; i < 100; i++) {
-            s.add(i);
-            s.remove(i -1); // // int-valued expression
-//            s.remove((short) (i - 1)); //Fixed it
 
-        }
-        System.out.println(s.size());
+        int a = 1, b, c;
+
+
+        ShortSet shortSet = new ShortSet();
+
+
+        String abc = shortSet.abc;
+
+    }
+
+
+
+    public static int getNum(int n) {
+
+
+
+        int x = 0;
+
+        do {
+
+            n = n / 10;
+            System.out.println("n = " + n);
+
+            x++;
+
+        } while (n != 0);
+
+        return x;
+    }
+
+
+    static void max() {
+
+        int x = 2, y = 9, z = 1;
+        if (x >= y)
+            if (x>=z)
+                System.out.println("x = " + x);
+            else
+                System.out.println("z = " + z);
+        else
+            if (y>=z)
+                System.out.println("y = " + y);
+            else
+                System.out.println("z = " + z);
     }
 }

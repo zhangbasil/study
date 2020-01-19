@@ -1,4 +1,4 @@
-package com.zhangbin.jackson;
+package com.zhangbin.jackson.configurer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
@@ -37,7 +37,7 @@ public class JacksonWebMvcConfigurer implements WebMvcConfigurer {
     @ConditionalOnMissingBean(value = MappingJackson2HttpMessageConverter.class,
             ignoredType = {
                     "org.springframework.hateoas.server.mvc.TypeConstrainedMappingJackson2HttpMessageConverter",
-                    "org.springframework.data.rest.webmvc.alps.AlpsJsonHttpMessageConverter" })
+                    "org.springframework.data.rest.webmvc.alps.AlpsJsonHttpMessageConverter"})
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
         ObjectMapper objectMapper = Jackson2ObjectMapperBuilder
                 .json()

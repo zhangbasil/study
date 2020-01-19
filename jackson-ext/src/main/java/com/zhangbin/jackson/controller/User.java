@@ -1,11 +1,9 @@
 package com.zhangbin.jackson.controller;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.zhangbin.jackson.core.DefaultJacksonAnnotationIntrospector;
-import com.zhangbin.jackson.core.annotation.Mask;
 import com.zhangbin.jackson.core.annotation.Other;
 import lombok.AccessLevel;
 import lombok.Getter;

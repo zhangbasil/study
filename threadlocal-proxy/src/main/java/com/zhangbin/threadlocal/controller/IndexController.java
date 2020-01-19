@@ -24,8 +24,8 @@ public class IndexController {
         return "hello world !";
     }
 
-    @GetMapping("/demo")
-    public Object demo() {
+    @GetMapping("/send")
+    public Object send() {
         return demoService.sendReq("张斌");
     }
 
