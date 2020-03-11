@@ -4,15 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.zhangbin.jackson.core.DefaultJacksonAnnotationIntrospector;
-import com.zhangbin.jackson.core.annotation.Other;
+import com.zhangbin.jackson.core.annotation.Mask;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * @author <a href="mailto:hbsy_zhb@163.com">zhangbin</a>
@@ -23,36 +20,23 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
 
-//    @JsonIgnore
     Long userId;
-    @Other
     String userName;
     @JsonIgnore
     String password;
-//    @Mask(left = 3, right = 4)
+    @Mask(left = 3, right = 4)
     String mobile;
-    LocalDateTime createTime;
-
-    Date date;
-
 
     public static void main(String[] args) throws JsonProcessingException {
-
-        User user = User.builder().userId(10000L)
+        User user = User.builder()
+                .userId(10000L)
                 .userName("张三丰")
-                .password("1828282812")
-                .mobile("17666666666")
-                .createTime(LocalDateTime.now())
+                .password("666888")
+                .mobile("17612346666")
                 .build();
-
         JsonMapper jsonMapper = JsonMapper.builder().build();
-
         jsonMapper.setAnnotationIntrospector(new DefaultJacksonAnnotationIntrospector());
-
-        String userStr = jsonMapper.writer().withDefaultPrettyPrinter()
-                .writeValueAsString(user);
-
-
+        String userStr = jsonMapper.writer().writeValueAsString(user);
         System.out.println("userStr = " + userStr);
     }
 
