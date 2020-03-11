@@ -1,2 +1,2 @@
 com.zhangbin.spi.Bumblebee
-#com.zhangbin.spi.OptimusPrime
+com.zhangbin.spi.OptimusPrime
