@@ -24,7 +24,7 @@ public class User {
     String userName;
     @JsonIgnore
     String password;
-    @Mask(left = 3, right = 4)
+//    @Mask(left = 3, right = 4)
     String mobile;
 
     public static void main(String[] args) throws JsonProcessingException {

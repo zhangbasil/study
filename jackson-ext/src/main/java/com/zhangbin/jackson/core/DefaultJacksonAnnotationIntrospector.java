@@ -12,6 +12,6 @@ import java.util.stream.Stream;
 public class DefaultJacksonAnnotationIntrospector extends JacksonAnnotationIntrospector {
 
     public DefaultJacksonAnnotationIntrospector() {
-        Stream.of(Mask.class, Other.class).forEach(clazz -> _annotationsInside.put(clazz, true));
+        Stream.of(Mask.class).forEach(clazz -> _annotationsInside.put(clazz, true));
     }
 }

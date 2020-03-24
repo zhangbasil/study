@@ -1,15 +1,11 @@
 package com.zhangbin.jackson.controller;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.zhangbin.jackson.core.annotation.Mask;
 import com.zhangbin.jackson.core.annotation.MaskField;
 import com.zhangbin.jackson.core.annotation.MaskJsonFilter;
 import com.zhangbin.jackson.core.annotation.MaskJsonView;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * @author <a href="mailto:hbsy_zhb@163.com">zhangbin</a>
@@ -28,8 +24,6 @@ public class JacksonController {
                 .userName("张三丰")
                 .password("1828282812")
                 .mobile("17666666666")
-                .createTime(LocalDateTime.now())
-                .date(new Date())
                 .build();
     }
 

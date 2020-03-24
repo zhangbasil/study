@@ -1,9 +1,6 @@
 package com.zhangbin.jackson.core;
 
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import com.zhangbin.jackson.core.annotation.Mask;
 import com.zhangbin.jackson.core.annotation.MaskField;
 import com.zhangbin.jackson.core.annotation.MaskJsonFilter;
 import com.zhangbin.jackson.core.annotation.MaskJsonView;
@@ -54,6 +51,8 @@ public class MaskJsonViewResponseBodyAdvice extends JsonViewResponseBodyAdvice {
         filterProvider.setDefaultFilter(filter);
         filterProvider.addFilter("maskPropertyFilter", filter);
         bodyContainer.setFilters(filterProvider);
+        bodyContainer.setSerializationView(MaskPropertyFilter.class);
+
     }
 
 
