@@ -16,7 +16,8 @@ public class JacksonController {
 
     @GetMapping("/index")
     @MaskJsonView(mask = {
-            @MaskJsonFilter(clazz = User.class, props = @MaskField(name = "mobile", pattern = @Mask(left = 3, right = 4)))
+            @MaskJsonFilter(clazz = User.class, props = @MaskField(name = "mobile", pattern = @Mask(left = 3, right = 4))),
+            @MaskJsonFilter(clazz = User.class, props = @MaskField(name = "userName", pattern = @Mask(left = 1, right = 0, repeat = 2)))
     })
     public User user() {
 
@@ -26,8 +27,6 @@ public class JacksonController {
                 .mobile("17666666666")
                 .build();
     }
-
-
 
 
 }

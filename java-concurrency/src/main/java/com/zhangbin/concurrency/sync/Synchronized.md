@@ -72,6 +72,8 @@ void onlyMe(Foo foo) {
 
 ```
 
+javap -v SynchronizedQuestion.class
+
 >   flags:
 >     Code:
 >       stack=2, locals=4, args_size=2

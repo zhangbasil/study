@@ -45,14 +45,8 @@ public class MaskJsonViewResponseBodyAdvice extends JsonViewResponseBodyAdvice {
             MaskField[] props = maskJsonFilter.props();
             maskFieldMap.put(clazz, props);
         }
-
-        SimpleFilterProvider filterProvider = new SimpleFilterProvider();
-        MaskPropertyFilter filter = new MaskPropertyFilter(maskFieldMap);
-        filterProvider.setDefaultFilter(filter);
-        filterProvider.addFilter("maskPropertyFilter", filter);
-        bodyContainer.setFilters(filterProvider);
-        bodyContainer.setSerializationView(MaskPropertyFilter.class);
-
+        MaskPropertyFilter propertyFilter = new MaskPropertyFilter(maskFieldMap);
+        bodyContainer.setFilters(new MaskFilterProvider(propertyFilter));
     }
 
 

@@ -18,7 +18,7 @@ import java.util.Map;
  * @author <a href="mailto:hbsy_zhb@163.com">zhangbin</a>
  */
 @JsonFilter("maskPropertyFilter")
-public class MaskPropertyFilter extends DefaultPropertyFilter {
+public class MaskPropertyFilter extends SimpleBeanPropertyFilter {
 
     private Map<Class<?>, MaskField[]> maskFieldMap;
 

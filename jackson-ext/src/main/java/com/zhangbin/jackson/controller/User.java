@@ -1,5 +1,6 @@
 package com.zhangbin.jackson.controller;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -22,7 +23,7 @@ public class User {
 
     Long userId;
     String userName;
-    @JsonIgnore
+//    @JsonIgnore
     String password;
 //    @Mask(left = 3, right = 4)
     String mobile;
