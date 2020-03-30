@@ -13,17 +13,20 @@ import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.Field;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author <a href="mailto:hbsy_zhb@163.com">zhangbin</a>
  */
-@JsonFilter("maskPropertyFilter")
+@JsonFilter(MaskPropertyFilter.FILTER_ID)
 public class MaskPropertyFilter extends SimpleBeanPropertyFilter {
+
+    public static final String FILTER_ID = "maskPropertyFilter";
 
     private Map<Class<?>, MaskField[]> maskFieldMap;
 
     public MaskPropertyFilter(Map<Class<?>, MaskField[]> maskFieldMap) {
-        this.maskFieldMap = maskFieldMap;
+        this.maskFieldMap = Objects.requireNonNull(maskFieldMap);
     }
 
 
@@ -32,18 +35,15 @@ public class MaskPropertyFilter extends SimpleBeanPropertyFilter {
         Class<?> clazz = pojo.getClass();
         String fieldName = writer.getFullName().getSimpleName();
         MaskField[] maskFields = maskFieldMap.get(clazz);
-        if (!CollectionUtils.isEmpty(maskFieldMap)) {
-            for (MaskField maskField : maskFields) {
-                String name = maskField.name();
-                if (fieldName.equals(name)) {
-                    AnnotatedMember member = writer.getMember();
-                    Mask pattern = maskField.pattern();
-                    Field field = clazz.getDeclaredField(fieldName);
-                    field.setAccessible(true);
-                    field.set(pojo, doMask(pattern, member.getValue(pojo).toString()));
-                }
+        for (MaskField maskField : maskFields) {
+            String name = maskField.name();
+            if (fieldName.equals(name)) {
+                AnnotatedMember member = writer.getMember();
+                Mask pattern = maskField.pattern();
+                Field field = clazz.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                field.set(pojo, doMask(pattern, member.getValue(pojo).toString()));
             }
-
         }
         writer.serializeAsField(pojo, gen, prov);
     }

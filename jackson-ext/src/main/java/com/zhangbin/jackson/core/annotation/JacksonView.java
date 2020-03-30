@@ -9,8 +9,10 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface MaskJsonView {
+public @interface JacksonView {
 
     MaskJsonFilter[] mask() default {};
+
+    FieldJsonFilter[] exclude() default {};
 
 }

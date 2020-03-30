@@ -1,9 +1,10 @@
 package com.zhangbin.jackson.core;
 
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.zhangbin.jackson.core.annotation.FieldJsonFilter;
+import com.zhangbin.jackson.core.annotation.JacksonView;
 import com.zhangbin.jackson.core.annotation.MaskField;
 import com.zhangbin.jackson.core.annotation.MaskJsonFilter;
-import com.zhangbin.jackson.core.annotation.MaskJsonView;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -28,25 +29,44 @@ public class MaskJsonViewResponseBodyAdvice extends JsonViewResponseBodyAdvice {
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         return AbstractJackson2HttpMessageConverter.class.isAssignableFrom(converterType)
-                && returnType.hasMethodAnnotation(MaskJsonView.class);
+                && returnType.hasMethodAnnotation(JacksonView.class);
     }
 
     @Override
     protected void beforeBodyWriteInternal(MappingJacksonValue bodyContainer, MediaType contentType, MethodParameter returnType, ServerHttpRequest request, ServerHttpResponse response) {
-        MaskJsonView annotation = returnType.getMethodAnnotation(MaskJsonView.class);
+        JacksonView annotation = returnType.getMethodAnnotation(JacksonView.class);
         if (Objects.isNull(annotation)) {
             super.beforeBodyWriteInternal(bodyContainer, contentType, returnType, request, response);
             return;
         }
+        bodyContainer.setFilters(buildMaskFilterProvider(annotation.mask()));
+
+        FieldJsonFilter[] fieldJsonFilters = annotation.exclude();
+
+        buildFieldFilterProvider(fieldJsonFilters);
+
+    }
+
+    private MaskFilterProvider buildMaskFilterProvider(MaskJsonFilter[] maskJsonFilters) {
         Map<Class<?>, MaskField[]> maskFieldMap = new HashMap<>();
-        MaskJsonFilter[] maskFastJsonFilters = annotation.mask();
-        for (MaskJsonFilter maskJsonFilter : maskFastJsonFilters) {
+        for (MaskJsonFilter maskJsonFilter : maskJsonFilters) {
             Class<?> clazz = maskJsonFilter.clazz();
             MaskField[] props = maskJsonFilter.props();
             maskFieldMap.put(clazz, props);
         }
         MaskPropertyFilter propertyFilter = new MaskPropertyFilter(maskFieldMap);
-        bodyContainer.setFilters(new MaskFilterProvider(propertyFilter));
+        return new MaskFilterProvider(propertyFilter);
+    }
+
+    private SimpleBeanPropertyFilter buildFieldFilterProvider(FieldJsonFilter[] fieldJsonFilters) {
+
+        for (FieldJsonFilter fieldJsonFilter : fieldJsonFilters) {
+            Class<?> clazz = fieldJsonFilter.clazz();
+            String[] props = fieldJsonFilter.props();
+        }
+
+//        com.zhangbin.jackson.core.FieldJsonFilter fieldJsonFilter = new com.zhangbin.jackson.core.FieldJsonFilter();
+        return SimpleBeanPropertyFilter.filterOutAllExcept();
     }
 
 
