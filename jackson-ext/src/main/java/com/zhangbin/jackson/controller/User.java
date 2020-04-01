@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.zhangbin.jackson.core.DefaultJacksonAnnotationIntrospector;
-import com.zhangbin.jackson.core.annotation.Mask;
+import com.zhangbin.jackson.core.annotation.*;
+import com.zhangbin.jackson.core.filter.IntegrationPropertyFilter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +32,16 @@ public class User {
 
     User share;
 
+    @JacksonView(
+            mask = {
+                    @MaskJsonFilter(clazz = User.class, props = {
+                            @MaskField(name = "mobile", pattern = @Mask(left = 3, right = 4)),
+                            @MaskField(name = "userName", pattern = @Mask(right = 0, repeat = 2))
+                    })},
+            exclude = {
+                    @FieldJsonFilter(clazz = User.class, props = {"userId", "password"})
+            }
+    )
     public static void main(String[] args) throws JsonProcessingException {
         User share = User.builder().userId(9999L).userName("分享人").password("1000000").mobile("188888776").build();
         User user = User.builder()
@@ -41,6 +53,10 @@ public class User {
                 .build();
         JsonMapper jsonMapper = JsonMapper.builder().build();
         jsonMapper.setAnnotationIntrospector(new DefaultJacksonAnnotationIntrospector());
+        jsonMapper.addMixIn(Object.class, IntegrationPropertyFilter.class);
+        SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+//        filterProvider.addFilter(IntegrationPropertyFilter.FILTER_ID, new IntegrationPropertyFilter(null));
+        jsonMapper.setFilterProvider(filterProvider);
         String userStr = jsonMapper.writer().writeValueAsString(user);
         System.out.println("userStr = " + userStr);
     }

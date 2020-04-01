@@ -14,6 +14,9 @@ import com.zhangbin.jackson.utils.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -27,10 +30,18 @@ public class IntegrationPropertyFilter extends SimpleBeanPropertyFilter {
 
     private final JacksonView jacksonView;
 
+    // 不需要json序列化的属性，例如：Result中的错误栈信息
+    private Map<Class<?>, String[]> excludeFields;
+
     public IntegrationPropertyFilter(JacksonView jacksonView) {
-        this.jacksonView = jacksonView;
+        this(jacksonView, Collections.emptyMap());
     }
 
+    public IntegrationPropertyFilter(JacksonView jacksonView, Map<Class<?>, String[]> excludeFields) {
+        this.jacksonView = Objects.requireNonNull(jacksonView);
+        this.excludeFields = Objects.requireNonNull(excludeFields);
+        Stream.of(jacksonView.exclude()).forEach(item -> excludeFields.put(item.clazz(), item.props()));
+    }
 
     @Override
     public void serializeAsField(Object pojo, JsonGenerator jgen, SerializerProvider provider, PropertyWriter writer) throws Exception {
@@ -65,7 +76,11 @@ public class IntegrationPropertyFilter extends SimpleBeanPropertyFilter {
     @Override
     protected boolean include(PropertyWriter writer) {
         Class<?> declaringClass = writer.getMember().getDeclaringClass();
-        return Stream.of(jacksonView.exclude()).allMatch(item -> item.clazz() != declaringClass || !Arrays.asList(item.props()).contains(writer.getName()));
+        String[] props = excludeFields.get(declaringClass);
+        if (Objects.isNull(props)) {
+            return true;
+        }
+        return !Arrays.asList(props).contains(writer.getName());
     }
 
 
