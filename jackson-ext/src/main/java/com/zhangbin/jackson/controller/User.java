@@ -23,17 +23,21 @@ public class User {
 
     Long userId;
     String userName;
-//    @JsonIgnore
+    @JsonIgnore
     String password;
 //    @Mask(left = 3, right = 4)
     String mobile;
 
+    User share;
+
     public static void main(String[] args) throws JsonProcessingException {
+        User share = User.builder().userId(9999L).userName("分享人").password("1000000").mobile("188888776").build();
         User user = User.builder()
                 .userId(10000L)
                 .userName("张三丰")
                 .password("666888")
                 .mobile("17612346666")
+                .share(share)
                 .build();
         JsonMapper jsonMapper = JsonMapper.builder().build();
         jsonMapper.setAnnotationIntrospector(new DefaultJacksonAnnotationIntrospector());

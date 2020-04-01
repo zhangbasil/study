@@ -11,8 +11,18 @@ import java.lang.annotation.*;
 @Documented
 public @interface JacksonView {
 
+    /**
+     * 掩码的过滤器
+     *
+     * @return
+     */
     MaskJsonFilter[] mask() default {};
 
+    /**
+     * 排除字段过滤器
+     *
+     * @return
+     */
     FieldJsonFilter[] exclude() default {};
 
 }

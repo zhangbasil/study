@@ -3,7 +3,7 @@ package com.zhangbin.jackson.configurer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.zhangbin.jackson.core.DefaultJacksonAnnotationIntrospector;
-import com.zhangbin.jackson.core.MaskPropertyFilter;
+import com.zhangbin.jackson.core.filter.IntegrationPropertyFilter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ public class JacksonWebMvcConfigurer implements WebMvcConfigurer {
                 .simpleDateFormat(DATE_PATTERN)
                 .serializerByType(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DATE_PATTERN)))
                 .annotationIntrospector(new DefaultJacksonAnnotationIntrospector())
-                .mixIn(Object.class, MaskPropertyFilter.class)
+                .mixIn(Object.class, IntegrationPropertyFilter.class)
                 .build();
     }
 }
