@@ -14,7 +14,7 @@ import com.zhangbin.jackson.utils.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -31,10 +31,10 @@ public class IntegrationPropertyFilter extends SimpleBeanPropertyFilter {
     private final JacksonView jacksonView;
 
     // 不需要json序列化的属性，例如：Result中的错误栈信息
-    private Map<Class<?>, String[]> excludeFields;
+    private final Map<Class<?>, String[]> excludeFields;
 
     public IntegrationPropertyFilter(JacksonView jacksonView) {
-        this(jacksonView, Collections.emptyMap());
+        this(jacksonView, new HashMap<>());
     }
 
     public IntegrationPropertyFilter(JacksonView jacksonView, Map<Class<?>, String[]> excludeFields) {
@@ -46,12 +46,12 @@ public class IntegrationPropertyFilter extends SimpleBeanPropertyFilter {
     @Override
     public void serializeAsField(Object pojo, JsonGenerator jgen, SerializerProvider provider, PropertyWriter writer) throws Exception {
 
-        this.handleMaskJsonFilter(pojo, writer);
+        this.doWithMaskJsonFilter(pojo, writer);
 
         super.serializeAsField(pojo, jgen, provider, writer);
     }
 
-    private void handleMaskJsonFilter(Object pojo, PropertyWriter writer) throws NoSuchFieldException, IllegalAccessException {
+    private void doWithMaskJsonFilter(Object pojo, PropertyWriter writer) throws NoSuchFieldException, IllegalAccessException {
         MaskJsonFilter[] maskJsonFilters = jacksonView.mask();
         Class<?> clazz = pojo.getClass();
         for (MaskJsonFilter maskJsonFilter : maskJsonFilters) {
