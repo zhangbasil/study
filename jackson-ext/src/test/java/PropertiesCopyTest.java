@@ -1,4 +1,4 @@
-import com.zhangbin.jackson.utils.PropertiesCopy;
+import com.zhangbin.jackson.utils.ObjectUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,7 +34,7 @@ public class PropertiesCopyTest {
 
         customer.setOther(customer1);
 
-        CustomerDTO customerDTO = PropertiesCopy.copyBean(customer, CustomerDTO.class);
+        CustomerDTO customerDTO = ObjectUtils.copyBean(customer, CustomerDTO.class);
         System.out.println("customerDTO = " + customerDTO);
 
     }
