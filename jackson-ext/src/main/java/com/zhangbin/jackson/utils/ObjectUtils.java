@@ -18,7 +18,7 @@ public final class ObjectUtils {
     private static final JsonMapper jsonMapper = JsonMapper.builder()
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .addModules(new Jdk8Module(), new JavaTimeModule())
+            .addModules(new JavaTimeModule())
             .build();
 
     public static <T> T copyBean(Object source, Class<T> target) {

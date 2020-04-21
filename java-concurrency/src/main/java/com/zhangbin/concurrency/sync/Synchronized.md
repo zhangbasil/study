@@ -123,6 +123,7 @@ synchronized void sync() {
 >         line 14: 4
 
 
+monitorenter 通过 cmpxchg （Compare and Exchange）指令
 
 #### 参考文献
 

@@ -18,7 +18,7 @@ public class HelloWorldHystrixCommand extends HystrixCommand<String> {
 
     @Override
     protected String run() throws Exception {
-        System.out.println("Thread.currentThread().getName() = " + Thread.currentThread().getName());
+        System.out.println("执行接口降级的线程：" + Thread.currentThread().getName());
         return "Hello " + name + " !";
     }
 

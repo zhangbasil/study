@@ -2,7 +2,9 @@ package com.zhangbin.spi;
 
 import org.junit.Test;
 
+import java.lang.reflect.Proxy;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.ServiceLoader;
 
 /**
@@ -15,18 +17,36 @@ import java.util.ServiceLoader;
 public class JavaSPITests {
 
     @Test
-    public void sayHello() {
-        ServiceLoader<Robot> serviceLoader = ServiceLoader.load(Robot.class);
-        System.out.println("Java SPI");
-        serviceLoader.forEach(Robot::sayHello);
+    public void sayHello() throws Exception {
+//        ServiceLoader<Robot> serviceLoader = ServiceLoader.load(Robot.class);
+//        System.out.println("Java SPI");
+//        serviceLoader.forEach(Robot::sayHello);
+
+
+        Class<?> robot = ClassLoader.getSystemClassLoader().loadClass("com.zhangbin.spi.Robot");
+
+
+        Object o1 = robot.getDeclaredConstructor().newInstance();
+
+        System.out.println("o1 = " + o1);
+
+
+        Class<?> clazz = ClassLoader.getSystemClassLoader().loadClass("com.zhangbin.spi.OptimusPrime");
+
+
+        OptimusPrime o = (OptimusPrime) clazz.getDeclaredConstructor().newInstance();
+        o.sayHello();
+
+
+        ServiceLoader<OptimusPrime> load = ServiceLoader.load(OptimusPrime.class);
+
+        load.iterator().next().sayHello();
     }
 
     /**
-     *
      * 冒泡排序
      *
      * 原理：相邻的两个元素进行比较，按照从小到大或者从大到小的顺序进行交换（数组下标 1 2 -> 2 3 -> 3 4 -> 4 5 ... n-1 n 比较）
-     *
      */
     @Test
     public void bubbleSort() {
