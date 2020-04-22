@@ -1,7 +1,5 @@
 package com.zhangbin.jackson.core.filter;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.ser.PropertyWriter;
 import com.zhangbin.jackson.core.annotation.Mask;
@@ -47,7 +45,6 @@ public class MaskSerializerFilter implements SerializeFilter {
             }
         }
     }
-
 
 
     private String doMask(Mask maskField, String value) {

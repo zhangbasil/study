@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.zhangbin.jackson.core.annotation.FieldJsonFilter;
 import com.zhangbin.jackson.core.annotation.JacksonView;
 import com.zhangbin.jackson.core.filter.DefaultPropertyFilter;
-import com.zhangbin.jackson.core.filter.ExcludeFieldSerializerFilter;
 import com.zhangbin.jackson.core.filter.MaskSerializerFilter;
-import com.zhangbin.jackson.result.Result;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -40,17 +38,15 @@ public class MaskJsonViewResponseBodyAdvice extends JsonViewResponseBodyAdvice {
             return;
         }
         SimpleFilterProvider filterProvider = new SimpleFilterProvider();
-        DefaultPropertyFilter filter = new DefaultPropertyFilter();
-
-        filter.addFilter(new MaskSerializerFilter(jacksonView.mask()), buildExcludeFiler(jacksonView.exclude()));
-        filterProvider.addFilter(DefaultPropertyFilter.FILTER_ID, filter);
+        filterProvider.addFilter(DefaultPropertyFilter.FILTER_ID, buildFiler(jacksonView));
         bodyContainer.setFilters(filterProvider);
     }
 
-    private ExcludeFieldSerializerFilter buildExcludeFiler(FieldJsonFilter[] filters) {
-        ExcludeFieldSerializerFilter excludeFieldSerializerFilter = new ExcludeFieldSerializerFilter();
-        Stream.of(filters).forEach(filter -> excludeFieldSerializerFilter.addExcludeField(filter.clazz(), filter.props()));
-        return excludeFieldSerializerFilter;
+    private DefaultPropertyFilter buildFiler(JacksonView jacksonView) {
+        DefaultPropertyFilter filter = new DefaultPropertyFilter();
+        filter.addFilters(new MaskSerializerFilter(jacksonView.mask()));
+        Stream.of(jacksonView.exclude()).forEach(item -> filter.addExcludeField(item.clazz(), item.props()));
+        return filter;
     }
 
 }
