@@ -53,7 +53,7 @@ public class DefaultPropertyFilter extends SimpleBeanPropertyFilter {
         this.excludeFields.put(clazz, newProps);
     }
 
-    public boolean include(Object pojo, PropertyWriter writer) {
+    private boolean include(Object pojo, PropertyWriter writer) {
         String name = writer.getName();
         Class<?> declaringClass = writer.getMember().getDeclaringClass();
         String[] props = null;
@@ -76,12 +76,9 @@ public class DefaultPropertyFilter extends SimpleBeanPropertyFilter {
     private boolean includeField4Result(Object pojo, String name) {
         if (pojo instanceof Result) {
             Result<?> result = (Result<?>) pojo;
-            // 返回结果成功或者错误 则不返回Result 中的 violationItems 属性
-            if ((result.isSuccess() || result.isError()) && Objects.equals(VIOLATION_ITEMS, name)) {
-                return false;
-            }
-            // 不成功 则不返回 data 属性
-            return result.isSuccess() || !Objects.equals(DATA, name);
+            // 返回结果成功 则不返回Result 中的 violationItems 属性
+            return (!result.isSuccess() || !Objects.equals(VIOLATION_ITEMS, name))
+                    && (result.isSuccess() || !Objects.equals(DATA, name));
         }
         return true;
     }

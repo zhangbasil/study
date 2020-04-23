@@ -87,15 +87,6 @@ public class DefaultResult<T> implements Result<T> {
         return "0".equals(code);
     }
 
-    @Override
-    public boolean isError() {
-        return code != null && code.startsWith("SYS_");
-    }
-
-    @Override
-    public boolean isFailure() {
-        return (!isSuccess()) && (!isError());
-    }
 
     public static class DefaultViolationItem implements ViolationItem {
 

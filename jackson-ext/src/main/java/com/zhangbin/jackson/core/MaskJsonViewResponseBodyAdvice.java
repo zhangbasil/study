@@ -1,7 +1,6 @@
 package com.zhangbin.jackson.core;
 
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import com.zhangbin.jackson.core.annotation.FieldJsonFilter;
 import com.zhangbin.jackson.core.annotation.JacksonView;
 import com.zhangbin.jackson.core.filter.DefaultPropertyFilter;
 import com.zhangbin.jackson.core.filter.MaskSerializerFilter;

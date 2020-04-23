@@ -86,20 +86,6 @@ public interface Result<T> extends Serializable {
     boolean isSuccess();
 
     /**
-     * 是否错误
-     *
-     * @return boolean
-     */
-    boolean isError();
-
-    /**
-     * 是否是业务处理失败，业务异常
-     *
-     * @return boolean
-     */
-    boolean isFailure();
-
-    /**
      * Violation Item
      *
      * @author freeway
