@@ -21,7 +21,6 @@ public class ThreadLocalController {
     @GetMapping("/demo")
     public String demo() {
         String val = ReqContext.get().getVal();
-        log.info("=======controller => " + val);
         threadLocalService.hello();
         return val;
     }

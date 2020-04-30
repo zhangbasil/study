@@ -13,6 +13,5 @@ public class ThreadLocalServiceImpl implements ThreadLocalService {
     @Override
     public void hello() {
         String val = ReqContext.get().getVal();
-        log.info("=======service val => " + val);
     }
 }

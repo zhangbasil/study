@@ -1,6 +1,9 @@
 package com.zhangbin.tool.array;
 
+import java.lang.management.GarbageCollectorMXBean;
+import java.lang.management.ManagementFactory;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author <a href="mailto:hbsy_zhb@163.com">zhangbin</a>
@@ -14,6 +17,12 @@ public class ArrayUtils {
 
         int[] merge = merge(a, b);
         System.out.println("merge = " + Arrays.toString(merge));
+
+        List<GarbageCollectorMXBean> beans = ManagementFactory.getGarbageCollectorMXBeans();
+        for (GarbageCollectorMXBean bean : beans) {
+            System.out.println(bean.getName());
+        }
+
     }
 
 

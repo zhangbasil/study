@@ -1,4 +1,4 @@
-## Synchronized
+## Synchronized关键字
 
 #### 作用
 
@@ -6,7 +6,7 @@
 
 
 
-#### 运用
+#### 使用
 
 - 作用在方法上面
 
@@ -33,8 +33,9 @@ public void send() {
 #### 原理推敲
 
 - synchronized 是Java语言中的关键字，所以肯定是有JVM来帮我们做同步的
-  - JVM只会执行Java字节码
-
+  
+- JVM只会执行Java字节码
+  
 - 了解Java 字节码
 
   - 同步指令
@@ -102,6 +103,22 @@ javap -v SynchronizedQuestion.class
 >         line 20: 8
 >         line 21: 18
 
+
+
+通过查看编译后的字节码发现会在整个代码块前后加上 *monitorenter* 和 *monitorexit*
+
+如若再深一步的追踪，会发现 hotspot 虚拟机是通过  **cmpxchg （Compare and Exchange）**指令来
+
+
+
+#### monitorenter
+
+monitorenter 通过 cmpxchg （Compare and Exchange）指令
+
+
+
+
+
 - 方法级隐式
 
 ```java
@@ -123,7 +140,6 @@ synchronized void sync() {
 >         line 14: 4
 
 
-monitorenter 通过 cmpxchg （Compare and Exchange）指令
 
 #### 参考文献
 

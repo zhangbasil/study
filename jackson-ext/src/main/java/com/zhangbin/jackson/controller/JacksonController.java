@@ -1,6 +1,7 @@
 package com.zhangbin.jackson.controller;
 
 import com.zhangbin.jackson.core.annotation.*;
+import com.zhangbin.jackson.pojo.User;
 import com.zhangbin.jackson.result.Result;
 import com.zhangbin.jackson.result.Results;
 import org.springframework.web.bind.annotation.GetMapping;
