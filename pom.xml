@@ -21,6 +21,7 @@
         <module>http-simulator</module>
         <module>tool</module>
         <module>hystrix</module>
+        <module>netty</module>
     </modules>
 
 
