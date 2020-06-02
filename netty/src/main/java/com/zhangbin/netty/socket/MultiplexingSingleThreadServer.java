@@ -11,12 +11,12 @@ import java.util.Set;
 
 /**
  * @author <a href="mailto:hbsy_zhb@163.com">zhangbin</a>
- * IO多路复用
+ * IO多路复用 单线程
  * <p>
  * 当多条连接共用一个阻塞对象后，进程只需要在一个阻塞对象上等待，而无须再轮询所有的连接。select epoll kqueue
  * 当某条连接有新的数据可以处理时，操作系统会通知进程，进程从阻塞状态返回，开始进行业务处理
  */
-public class MultiplexingServer {
+public class MultiplexingSingleThreadServer {
 
     public static void main(String[] args) {
         multiplexing();
@@ -25,14 +25,13 @@ public class MultiplexingServer {
 
     public static void multiplexing() {
         try {
-            ServerSocketChannel socketChannel = ServerSocketChannel.open();
-            socketChannel.bind(new InetSocketAddress(8080));
-            // 设置Accept为非阻塞
-            socketChannel.configureBlocking(false);
             // 打开一个I/O多路复用器 KQueueSelector -> macOS
-            Selector selector = Selector.open();
-            // 将ServerSocketChannel 注册到kQueue多路复用器中，注册事件为Accept
-            socketChannel.register(selector, SelectionKey.OP_ACCEPT);
+            Selector selector = Selector.open(); // 根据操作系统会创建对应的SelectorProvider
+            ServerSocketChannel.open() //打开一个ServerSocketChannel
+                    .bind(new InetSocketAddress(8080)) // 绑定
+                    .configureBlocking(false) // 设置Accept非阻塞
+                    .register(selector, SelectionKey.OP_ACCEPT); // 将ServerSocketChannel 注册到kQueue多路复用器中，注册事件为Accept
+
 
             System.out.println("将ServerSocketChannel注册到多路复用器中");
 
@@ -62,11 +61,14 @@ public class MultiplexingServer {
                         System.out.println(" 进入 Read 事件 ");
                         SocketChannel client = (SocketChannel) selectionKey.channel();
                         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(5);
-                        if (client.read(byteBuffer) > 0) {
+                        int read = client.read(byteBuffer);
+                        if (read > 0) {
                             byteBuffer.flip();
                             byte[] content = new byte[byteBuffer.limit()];
                             byteBuffer.get(content);
                             System.out.println(new String(content));
+                        } else if (read == -1) { // client 关闭
+                            client.close();
                         }
 
                     } else {

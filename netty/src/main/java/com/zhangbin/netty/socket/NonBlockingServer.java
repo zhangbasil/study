@@ -50,7 +50,7 @@ public class NonBlockingServer {
                     ByteBuffer byteBuffer = ByteBuffer.allocateDirect(5);
                     channel.read(byteBuffer);
                     byteBuffer.flip();
-                    byte[] content = new byte[byteBuffer.limit()];
+                    byte[] content = new byte[byteBuffer.remaining()];
                     byteBuffer.get(content);
                     System.out.println("客户端==>" + channel.socket().getPort() + " : " + new String(content));
                 }
