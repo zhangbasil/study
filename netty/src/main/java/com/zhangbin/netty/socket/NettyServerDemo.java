@@ -7,11 +7,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
-import io.netty.handler.timeout.IdleStateEvent;
-import io.netty.handler.timeout.IdleStateHandler;
 
 import java.net.SocketAddress;
-import java.util.Date;
 
 /**
  * @author <a href="mailto:hbsy_zhb@163.com">zhangbin</a>
@@ -40,7 +37,6 @@ public class NettyServerDemo {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline().addLast(new StringDecoder())
-                                .addLast(new IdleStateHandler(0, 0, 3))
                                 .addLast(new StringEncoder())
                                 .addLast(new OperationHandler());
                     }
@@ -78,11 +74,6 @@ public class NettyServerDemo {
         @Override
         public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
             super.userEventTriggered(ctx, evt);
-            if (evt instanceof IdleStateEvent) {
-                System.out.println("new Date() = " + new Date());
-//                ctx.channel().close();
-                ctx.channel().writeAndFlush("heartBeat");
-            }
         }
 
         @Override
