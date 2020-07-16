@@ -75,13 +75,13 @@ public class NettyServerDemo {
             super.channelReadComplete(ctx);
         }
 
+        // netty idle监测 通过 IdleStateHandler 设置，空闲发送心跳
         @Override
         public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
             super.userEventTriggered(ctx, evt);
             if (evt instanceof IdleStateEvent) {
                 System.out.println("new Date() = " + new Date());
-//                ctx.channel().close();
-                ctx.channel().writeAndFlush("heartBeat");
+                ctx.channel().close();
             }
         }
 

@@ -7,6 +7,17 @@ import java.util.Objects;
  */
 public class Singleton {
 
+
+    public static void main(String[] args) {
+        String url = "http://maxima-private-prod.oss-cn-hangzhou.aliyuncs.com/2020061000000309.jpg";
+
+
+        String s = url.split("\\?")[0];
+        System.out.println("s = " + s);
+
+
+    }
+
     /**
      *  使用 volatile 是禁止指令重排序
      */

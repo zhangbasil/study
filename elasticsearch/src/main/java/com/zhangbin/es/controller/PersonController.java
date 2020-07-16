@@ -2,6 +2,12 @@ package com.zhangbin.es.controller;
 
 import com.zhangbin.es.pojo.Person;
 import com.zhangbin.es.respository.PersonRepository;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +16,7 @@ import javax.annotation.Resource;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,6 +27,10 @@ public class PersonController {
 
     @Resource
     private PersonRepository personRepository;
+    @Resource
+    private ElasticsearchOperations elasticsearchOperations;
+
+
 
     @GetMapping("/search")
     public Object search() {
@@ -29,9 +40,19 @@ public class PersonController {
     @GetMapping("/query")
     public Object queryByKeyword(@RequestParam(value = "keyword", required = false) String keyword) {
 
-//        personRepository.search()
+        Query query = new NativeSearchQueryBuilder()
+                .withQuery(QueryBuilders.matchAllQuery())
+                .withFields("message")
+                .withPageable(PageRequest.of(0, 10))
+                .build();
 
-        return null;
+
+        Query searchQuery = new NativeSearchQueryBuilder()
+                .withIds(Arrays.asList("person"))
+                .withQuery(QueryBuilders.fuzzyQuery("address", keyword))
+//                .withFilter(QueryBuilders.fuzzyQuery("address", keyword))
+                .build();
+        return elasticsearchOperations.multiGet(searchQuery, Person.class, IndexCoordinates.of("person"));
     }
 
 
