@@ -81,7 +81,8 @@ public class NettyServerDemo {
             super.userEventTriggered(ctx, evt);
             if (evt instanceof IdleStateEvent) {
                 System.out.println("new Date() = " + new Date());
-                ctx.channel().close();
+//                ctx.channel().close();
+                ctx.channel().writeAndFlush("heartBeat");
             }
         }
 
