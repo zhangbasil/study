@@ -3,7 +3,6 @@ package com.zhangbin.concurrency.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -14,7 +13,7 @@ public class SyncController {
 
 
     @GetMapping("/async")
-    public Object sync(HttpServletResponse response) {
+    public Object sync() {
         try {
             CompletableFuture.supplyAsync(this::hello)
                     .thenAccept(t -> System.out.println("t = " + t));
