@@ -5,6 +5,10 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpRequestDecoder;
+import io.netty.handler.codec.http.HttpRequestEncoder;
+import io.netty.handler.codec.http.HttpResponseDecoder;
+import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -39,10 +43,16 @@ public class NettyServerDemo {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new StringDecoder())
-                                .addLast(new IdleStateHandler(0, 0, 3))
+                        ch.pipeline()
                                 .addLast(new StringEncoder())
+                                .addLast(new StringDecoder())
+                                .addLast(new HttpRequestEncoder())
+                                .addLast(new HttpRequestDecoder())
+                                .addLast(new HttpResponseEncoder())
+                                .addLast(new HttpResponseDecoder())
+                                .addLast(new IdleStateHandler(0, 0, 3))
                                 .addLast(new OperationHandler());
+
                     }
                 });
         serverBootstrap.bind(8080);
@@ -90,13 +100,14 @@ public class NettyServerDemo {
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
             super.channelRead(ctx, msg);
             System.out.println("read -> msg = " + msg);
-            ctx.channel().writeAndFlush(msg);
+            ctx.channel().writeAndFlush(msg + "0000000");
         }
 
         @Override
         public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
             System.out.println("write -> msg = " + msg);
-            super.write(ctx, msg, promise);
+            super.write(ctx, msg + " ------write", promise);
+
         }
 
     }

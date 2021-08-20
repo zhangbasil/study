@@ -5,6 +5,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.lang3.time.DateUtils;
+
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * @author <a href="mailto:hbsy_zhb@163.com">zhangbin</a>
@@ -12,7 +17,24 @@ import lombok.experimental.FieldDefaults;
 public class LombokTest {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
+
+
+        Date effectiveEndTime = new Date();
+        Date date1 = DateUtils.setSeconds(DateUtils.setMinutes(DateUtils.setHours(effectiveEndTime, 23), 59), 59);
+
+
+        System.out.println("date1 = " + date1);
+        System.out.println("effectiveEndTime = " + effectiveEndTime);
+
+
+        LocalDate now = LocalDate.now();
+
+        Date date = DateUtils.parseDate(String.valueOf(now), "yyyy-MM-dd");
+
+        System.out.println("date = " + date);
+
+
         User user1 = new User();
         user1.setName("张三");
 

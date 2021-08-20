@@ -2,6 +2,7 @@ package com.zhangbin.study.hystrix;
 
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
+import com.netflix.hystrix.HystrixCommandProperties;
 
 /**
  * @author <a href="mailto:hbsy_zhb@163.com">zhangbin</a>
@@ -11,7 +12,9 @@ public class HelloWorldHystrixCommand extends HystrixCommand<String> {
     private final String name;
 
     protected HelloWorldHystrixCommand(String name) {
-        super(HystrixCommandGroupKey.Factory.asKey(""));
+        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("abc"))
+                .andCommandPropertiesDefaults(HystrixCommandProperties.defaultSetter()
+                        .withExecutionIsolationStrategy(HystrixCommandProperties.ExecutionIsolationStrategy.SEMAPHORE)));
         this.name = name;
     }
 
