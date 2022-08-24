@@ -35,9 +35,6 @@ import java.util.concurrent.Executor;
  * leader选举过程
  *
  *
- *
- *
- *
  * version 2.x grpc
  *
  *
