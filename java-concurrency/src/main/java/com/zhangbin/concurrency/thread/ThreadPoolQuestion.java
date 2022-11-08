@@ -16,17 +16,26 @@ import java.util.concurrent.TimeUnit;
  */
 public class ThreadPoolQuestion {
 
+    private static final int COUNT_BITS = Integer.SIZE - 3;
+    private static final int CAPACITY   = (1 << COUNT_BITS) - 1;
+
+    // runState is stored in the high-order bits
+    private static final int RUNNING    = -1 << COUNT_BITS;
+
     public static void main(String[] args) {
 
 //        threadPoolExecutor();
-        forkJoinPool();
+//        forkJoinPool();
 //        parallelStream();
 
 
-
+        String rocketmq_home = System.getenv("ROCKETMQ_HOME");
+        System.out.println("env = " + rocketmq_home);
 
 
     }
+
+    private static int ctlOf(int rs, int wc) { return rs | wc; }
 
 
 
@@ -48,6 +57,8 @@ public class ThreadPoolQuestion {
         for (int i = 0; i < 100; i++) {
             executor.submit(ThreadPoolQuestion::action);
         }
+
+        executor.execute(ThreadPoolQuestion::action);
 
 //        try {
 //            executor.awaitTermination(2000, TimeUnit.MILLISECONDS);

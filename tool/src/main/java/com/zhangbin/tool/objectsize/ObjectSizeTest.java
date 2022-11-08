@@ -21,26 +21,66 @@ public class ObjectSizeTest {
 
     public static void main(String[] args) {
 
-        for (int i = 200; i < 500; i++) {
-            sendRequest(i);
+        int[] ids = {95974,
+                97202,
+                96873,
+                96835,
+                96204,
+                96028,
+                96760,
+                96233,
+                96027,
+                96030,
+                96232,
+                96761,
+                97140,
+                95957,
+                96224,
+                96170,
+                99711,
+                97125,
+                99715,
+                96355,
+                96255,
+                96264,
+                97884,
+                97197,
+                97550,
+                96390,
+                97549,
+                96350,
+                96875,
+                96871,
+                96383,
+                96426,
+                96250,
+                96231,
+                99691,
+                97076,
+                96205};
+
+        for (int id : ids) {
+            String url = "https://tsp-api.maxima-cars.com/api/web-core/depot/directly/" + id;
+            send(url);
+
         }
 
 
     }
 
-    private static void sendRequest(int id) {
 
-        String url = "http://192.168.2." + id + ":8088/";
-
+    private static void send(String url) {
         Request request = new Request.Builder()
+                .addHeader("token", "49d5d3d76561c71129be59fee09ceeed")
                 .url(url)
                 .get()
                 .build();
         try {
             Response response = HTTP_CLIENT.newCall(request).execute();
-            System.out.println("response = " + response);
+            System.out.println(url + "     response = " + response.body().string());
         } catch (IOException e) {
-            System.out.println(url + "  不对");
+            e.printStackTrace();
         }
     }
+
 }

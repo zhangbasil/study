@@ -14,10 +14,43 @@ public class Question {
 //        orderExec();
 //        Thread.sleep(5_000);
 
-        deadLock();
+//        deadLock();
+
+        new LoopThread("t1").start();
+        new LoopThread("t2").start();
+
 
     }
 
+
+    /**
+     * 2个线程交叉依次打印1...10
+     */
+    static class LoopThread extends Thread {
+
+        volatile int state = 0;// 0打印偶数 1打印奇数
+
+
+        public LoopThread(String name) {
+            super(name);
+        }
+
+        @Override
+        public void run() {
+            for (int i = 0; i < 10; i++) {
+                if (state == 0) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    state = 1;
+                    notify();
+                }
+                System.out.println(Thread.currentThread().getName() + "  " + i);
+            }
+        }
+    }
 
     /**
      * jps

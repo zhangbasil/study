@@ -23,6 +23,8 @@
         <module>hystrix</module>
         <module>netty</module>
         <module>elasticsearch</module>
+        <module>mq</module>
+        <module>sftp</module>
     </modules>
 
 
