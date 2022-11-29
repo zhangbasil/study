@@ -1,0 +1,15 @@
+spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    virtual-host: /
+    template:
+      retry:
+        enabled: true
+      exchange: ss
+      routing-key:
+    listener:
+      direct:
+        acknowledge-mode: auto
+      simple:
+        acknowledge-mode: auto
